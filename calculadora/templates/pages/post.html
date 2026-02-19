@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amanda Melissa | {{post.title}}</title>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v7.2.0/css/all.css">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="shortcut icon" href="{% static "imgs/favicon.ico" %}" type="image/x-icon">
+</head>
+<body>
+    {% include "partials/header.html" %}
+
+    <div class="main-container">
+        <div class="content-area">
+            <div class="searchbar">
+                <form action="{% url 'search' %}" method="get">
+                    <input type="text" name="q" placeholder="Pesquisar posts..." id='search-form'>
+                    <button type="submit">
+                        <i class="fas fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+            </div>
+
+            {% if categoria %}
+                {% include "partials/breadcrumbs-category.html" %}
+            {% else %}
+                {% include "partials/breadcrumbs.html" %}
+            {% endif %}
+
+            <div class="posts">
+                {% if postagens %}
+                    {% for post in postagens %}
+                        <a href="{% url 'post_detail' slug=post.slug %}">
+                            <div class="post">
+                                <h2>{{post.title}}</h2>
+                                <p>{{post.description}}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <article class="post-content">
+                        <h2>{{ post.title }}</h2>
+                        
+                        <div class="tags">
+                            {% for tag in post.tags.all %}
+                                <span class="tag-item">#{{ tag.name }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="post-text" style="line-height: 1.8; font-size: 18px; margin-top: 20px;">
+                            {{ post.text|linebreaks }}
+                        </div>
+
+                        <section class="comments-section" style="margin-top: 50px; border-top: 1px solid #32476e; padding-top: 20px;">
+                            <h3>Comentários ({{ post.comments.count }})</h3>
+                            
+                            {% for comment in post.comments.all %}
+                                <div class="comment" style="background: rgba(119, 141, 169, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                                    <strong>{{ comment.author }}</strong> disse:
+                                    <p>{{ comment.text }}</p>
+                                    <small>{{ comment.created_at|date:"d/m/Y" }}</small>
+                                </div>
+                            {% empty %}
+                                <p>Seja o primeiro a comentar!</p>
+                            {% endfor %}
+                        </section>
+
+                        <div class="comentar-form">
+                            <h4>Deixe um comentário</h4>
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn-comentar">Enviar Comentário</button>
+                            </form>
+                        </div>
+                    </article>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% include "partials/footer.html" %}
+</body>
+</html>

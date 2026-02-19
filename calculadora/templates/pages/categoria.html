@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amanda Melissa | {{categoria.name}}</title>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v7.2.0/css/all.css">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="shortcut icon" href="{% static "imgs/favicon.ico" %}" type="image/x-icon">
+</head>
+<body>
+    {% include "partials/header.html" %}
+
+    <div class="main-container">
+        <div class="content-area">
+            <div class="searchbar"><form action="{% url 'search' %}" method="get">
+            <input type="text" name="q" placeholder="Pesquisar posts..." id='search-form'>
+            <button type="submit">
+                <i class="fas fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form></div>
+            {% if categoria %}
+                {% include "partials/breadcrumbs-category.html" %}
+            {% else %}
+                {% include "partials/breadcrumbs.html" %}
+            {% endif %}
+
+            <div class="posts">
+                {% if postagens %}
+                    {% for post in postagens %}
+                        <a href="{% url 'post_detail' slug=post.slug %}">
+                            <div class="post">
+                                <h4>{{post.title}}</h4>
+                                <p>{{post.description}}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="post-content">
+                        <h4>{{ post.title }}</h4>
+                        <p>{{ post.text }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

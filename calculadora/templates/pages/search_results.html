@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados para: {{ query }}</title>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v7.2.0/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <link rel="shortcut icon" href="{% static 'imgs/favicon.ico' %}" type="image/x-icon">
+</head>
+<body>
+    {% include "partials/header.html" %}
+
+    <div class="main-container">
+        <div class="content-area">
+            <div class='searchbar'>
+                <form action="{% url 'search' %}" method="get">
+                    <input type="text" name="q" placeholder="Pesquisar novamente..." value="{{ query }}">
+                    <button type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="search-header" style="margin-top: 0;"> <h2>Resultados para: "{{ query }}"</h2>
+                <p>{{ postagens|length }} post(s) encontrado(s)</p>
+            </div>
+            
+            <hr>
+
+            <div class='posts'>
+                {% for post in postagens %}
+                    <a href="{% url 'post_detail' slug=post.slug %}">
+                        <div class='post'>
+                            <h4>{{ post.title }}</h4>
+                            <p>{{ post.description }}</p>
+                        </div>
+                    </a>
+                {% empty %}
+                    <div class="no-results">
+                        <p>Ops! Não encontramos nada com esse termo. Que tal tentar outra palavra?</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div> </body>
+</html>

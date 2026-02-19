@@ -1,0 +1,10 @@
+
+    <div class='post'>
+        <h2 class='post-content'>{{post.title}}</h2>
+        <p class='post-content'>Post criando em {{post.created_at}}</p>
+        <a href="{% url 'category' post.category.slug %}"><p class='post-content'>Categoria: {{post.category}}</p></a>
+        <p class='post-content'>Autora: {{post.author}}</p>
+        <p class='post-content'>Descrição do post: {{post.description}}</p>
+        <hr>
+        <p class='post-content'>{{post.text}}</p>
+    </div>

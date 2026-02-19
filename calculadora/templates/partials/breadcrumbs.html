@@ -1,0 +1,12 @@
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}">Home</a> 
+    {% if post.category %}
+        <a href="{% url 'category' post.category.slug %}">> {{ post.category.name }}</a>
+    {% else %}
+    {% endif %}
+
+    {% if post.title %}
+        <a href="{% url 'post_detail' post.slug %}">> {{ post.title}}</a>    
+    {% endif %}
+</nav>
+<hr>

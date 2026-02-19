@@ -1,0 +1,9 @@
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}">Home</a> 
+    {% if categoria %}
+        <a>> {{ categoria.name }}</a>
+    {% elif post %}
+        <a>{{ post.category.name }}</a>
+    {% endif %}
+</nav>
+<hr>
